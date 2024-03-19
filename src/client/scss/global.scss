@@ -1,37 +1,7 @@
 @import 'reset';
-@import 'variables';
-@import 'input';
-@import 'asset-card';
-@import 'audio-channel';
-@import 'audio-upload';
+@import 'core';
 
 body {
-    font-family: 'Nova Cut', cursive;
-    background: var(--black);
-}
-
-.setup-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    display: flex;
-    height: 100%;
-    width: 100%;
-
-    justify-content: center;
-    align-items: center;
-
-    background: rgba(0, 0, 0, 0.3);
-}
-
-.activate {
-    font-size: 2rem;
-    font-weight: bold;
-    padding: 1rem;
-    border: none;
-    background: var(--white);
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    box-shadow: var(--box-shadow);
+	background: var(--color-white);
+	color: var(--color-black);
 }

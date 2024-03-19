@@ -1,0 +1,83 @@
+@import "functions";
+
+// $rem: 14px;
+
+$black: #071013;
+$white: #e6e1db;
+$orange: #F79824;
+$gray: #6d7b6d;
+$green-dark: #26502A;
+$green-light: #9cb0a4;
+$green-saturated: #56B35F;
+$blue-dark: #373f58;
+$blue-light: #9baebc;
+
+$colors: (
+	"black" : $black,
+	"white" : $white,
+	"orange" : $orange,
+	"gray" : $gray,
+	"green-dark" : $green-dark,
+	"green-light" : $green-light,
+	"green-saturated": $green-saturated,
+	"blue-dark" : $blue-dark,
+	"blue-light" : $blue-light
+);
+
+$border-radii: (
+	"min": to_rem(4),
+	"sm": to_rem(8),
+	"md": to_rem(12),
+	"lg": to_rem(16),
+	"xl": to_rem(32)
+);
+
+$font-sizes: (
+	"base": $rem,
+	"large": 1.25rem,
+	"lead": 1.125rem,
+	"xs": to_rem(10),
+	"sm": to_rem(13),
+	"h6": to_rem(16),
+	"h5": to_rem(18),
+	"h4": to_rem(18),
+	"h3": to_rem(24),
+	"h2": to_rem(32),
+	"h1": to_rem(36),
+	"display-sm": to_rem(40),
+	"display-md": to_rem(48),
+	"display-lg": clamp(to_rem(48), 1rem + calc(10vw / 3), to_rem(64))
+);
+
+// font-size: 2rem;
+// font-size: clamp(2rem, 1.4285714285714286rem + 2.857142857142857vw, 4rem);
+
+$breakpoints: (
+	"xs": to_rem(480px),
+	"sm": to_rem(576px),
+	"md": to_rem(768px),
+	"lg": to_rem(990px),
+	"xl": to_rem(1440px),
+	"xxl": to_rem(1920px)
+);
+
+$spacers: (
+	"tiny": .75rem,
+	"min": .25rem,
+	"sm": .5rem,
+	"base": 1rem,
+	"base-sm": 1.75rem,
+	"base-lg": 1.5rem,
+	"md": 2rem,
+	"lg": 3rem,
+	"xl": 4.5rem,
+	"xxl": 7.5rem
+);
+
+$container_min_padding: 1rem;
+$container_width: to_rem(1170px);
+$container_max_width: to_rem(1440px);
+
+$box-shadow: 0px 0.74716px 2.21381px 0px rgba(97, 97, 97, 0.02), 0px 1.79553px 5.32008px 0px rgba(97, 97, 97, 0.03), 0px 3.38082px 10.01724px 0px rgba(97, 97, 97, 0.04), 0px 6.0308px 17.86905px 0px rgba(97, 97, 97, 0.04), 0px 11.27995px 33.42209px 0px rgba(97, 97, 97, 0.05), 0px 27px 80px 0px rgba(97, 97, 97, 0.07);
+
+$border-base: 1px solid var(--color-charcoal-200);

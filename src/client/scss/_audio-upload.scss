@@ -1,0 +1,73 @@
+.audio-upload {
+    position: fixed;
+
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+
+    display: none;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        display: block;
+        height: 100%;
+        width: 100%;
+
+        background: rgba(black, 0.5);
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        display: inline-block;
+        position: absolute;
+        padding: 1rem;
+        top: 50%;
+        left: 50%;
+        background: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        transform: translateX(-50%) translateY(-50%);
+    }
+}
+
+.dm-audio.upload {
+    .audio-upload {
+        display: block;
+    }
+}
+
+.add {
+    background: var(--white);
+    display: block;
+    height: 5rem;
+    width: auto;
+    padding: 0.5rem;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    box-shadow: var(--box-shadow);
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 4rem;
+
+    span {
+        position: absolute;
+        text-align: center;
+        line-height: 0.8;
+        height: auto;
+        display: inline-block;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+
+        &:first-of-type {
+            transform: translateX(-50%) translateY(-50%) rotate(270deg);
+        }
+    }
+}

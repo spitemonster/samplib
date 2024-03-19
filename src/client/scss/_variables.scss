@@ -1,0 +1,16 @@
+@use 'sass:string';
+
+$vars: (
+    'white': #f0ebdc,
+    'black': #393847,
+    'yellow': #c98c39,
+    'blue--light': #3071a9,
+    'border-radius': 30px,
+    'box-shadow': rgba(black, 0.5) 0px 2px 12px,
+);
+
+:root {
+    @each $name, $value in $vars {
+        --#{$name}: #{$value};
+    }
+}

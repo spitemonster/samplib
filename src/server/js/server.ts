@@ -5,14 +5,19 @@ import * as fs from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import * as path from 'node:path'
 
-import multer from 'multer';
+import multer from 'multer'
 
 import cors from 'cors'
-import { Client } from 'pg'
 
 import dotenv from 'dotenv'
 dotenv.config()
 const PORT = process.env.PORT || 3000
+// import { AudioAsset } from '../../types'
+
+import { db, testDBConnection } from './db/db'
+import { Asset } from './db/models/models'
+
+
 // const ENV = process.env.NODE_ENV
 
 // const __filename = fileURLToPath(import.meta.url)
@@ -31,13 +36,30 @@ try {
     console.log(err)
 }
 
-const client = new Client()
-
 try {
-	await client.connect()	
-} catch (err) {
-	console.log(err)
+	testDBConnection()
+} catch (error) {
+	console.log('there has been an error connecting to the database')
+	console.error(error)
 }
+
+db.sync({ force: true })
+	.then(() => {
+		console.log('tables initialized')
+	})
+	.catch((err) => {
+		console.error(err)
+	})
+
+// initializeDB();
+
+// const client = new Client()
+
+// try {
+// 	await client.connect()	
+// } catch (err) {
+// 	console.log(err)
+// }
 
 app.use(cors())
 app.use(express.json())
@@ -55,7 +77,7 @@ const storage = multer.diskStorage({
         const ext = sp[1]
 
         cb(null, `${fn}-${Date.now()}.${ext}`)
-    },
+    }
 })
 
 const upload = multer({ storage: storage })
@@ -68,14 +90,26 @@ app.get('/', async (req: Request, res: Response) => {
 // 	res.sendFile(path.join(publicPath, ''))
 // });
 
+function generateId() {
+    return Math.random().toString(36).slice(2, 14)
+}
+
+function createAudioAsset(name: string, url: string) {
+	return Asset.create({
+		id: generateId(),
+		name,
+		url
+	})
+}
+
 app.post('/upload', upload.single('file'), async (req, res) => {
-	console.log(req)
-	console.log(res)
-    // createAsset(`audio/${req.file.filename}`, generateId(), req.body.name).then(
-    //     (asset) => {
-    //         res.json(asset)
-    //     }
-    // )
+	if (!req || !req.file || !req.body || !req.body.name) {
+		return res.status(404)
+	}
+
+	createAudioAsset(req.body.name, `audio/${req.file?.filename}`)
+	res.status(200)
+	res.send("you did it")
 })
 
 const server = app.listen(PORT, () => {
@@ -87,11 +121,10 @@ function closeServer() {
 	console.info('||== Closing Server ==||')
 	server.close(() => {
 		console.info('||== Server Closed ==||')
-		client.end()
+		// client.end()
 		process.exit(0)
 	})
 }
 
 process.on('SIGINT', closeServer)
-
 process.on('SIGTERM', closeServer)

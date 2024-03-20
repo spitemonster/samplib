@@ -45,7 +45,9 @@
         "express-fileupload": "^1.4.0",
         "multer": "^1.4.5-lts.1",
         "pg": "^8.11.3",
+        "pg-hstore": "^2.3.4",
         "sass": "^1.72.0",
+        "sequelize": "^6.37.1",
         "tone": "^14.7.77",
         "vue": "^3.2.45"
     }

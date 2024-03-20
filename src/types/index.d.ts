@@ -1,12 +1,16 @@
-// export type Tag = {
-//     id: string
-//     name: string
-// }
+export type ITag = {
+    id: string
+    name: string
+}
 
-// export class Asset {
-// 	id: string
-//     tags: Array<Tag>
-// 	name: string
+export interface IAsset {
+	id: string
+    tags: Array<Tag>
+	name: string
+}
+
+// export interface AudioAsset extends Asset {
+// 	url: string
 // }
 
 // export type AudioBlock = {

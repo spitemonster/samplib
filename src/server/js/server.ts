@@ -43,13 +43,25 @@ try {
 	console.error(error)
 }
 
-db.sync({ force: true })
+if (process.env.NODE_ENV == 'development') {
+	db.sync({ force: true })
 	.then(() => {
-		console.log('tables initialized')
+		console.log('tables re-initialized')
 	})
 	.catch((err) => {
 		console.error(err)
 	})
+} else {
+	db.sync({ alter: true })
+		.then(() => {
+			console.log('tables initialized')
+		})
+		.catch((err) => {
+			console.error(err)
+		})
+}
+
+
 
 // initializeDB();
 
@@ -94,12 +106,19 @@ function generateId() {
     return Math.random().toString(36).slice(2, 14)
 }
 
-function createAudioAsset(name: string, url: string) {
-	return Asset.create({
-		id: generateId(),
-		name,
-		url
-	})
+async function createAudioAsset(name: string, url: string) {
+	try {
+		const asset = Asset.create({
+			id: generateId(),
+			name,
+			url
+		})
+
+		return asset
+	} catch (err) {
+		console.error(err)
+		return
+	}
 }
 
 app.post('/upload', upload.single('file'), async (req, res) => {
@@ -107,7 +126,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 		return res.status(404)
 	}
 
-	createAudioAsset(req.body.name, `audio/${req.file?.filename}`)
+	await createAudioAsset(req.body.name, `audio/${req.file?.filename}`)
 	res.status(200)
 	res.send('you did it')
 })
@@ -120,8 +139,9 @@ function closeServer() {
 	console.info('\n||== Interrupt Signal Received ==||')
 	console.info('||== Closing Server ==||')
 	server.close(() => {
+		db.close()
+		console.info('||== Database Closed ==||')
 		console.info('||== Server Closed ==||')
-		// client.end()
 		process.exit(0)
 	})
 }

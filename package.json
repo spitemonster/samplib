@@ -11,7 +11,7 @@
         "watch:client": "webpack --config webpack.client.config.js --watch",
 		"watch": "npm run watch:server & npm run watch:client",
         "start:server": "wait-on dist/server/server.cjs && nodemon dist/server/server.cjs",
-        "dev": "npm run watch:server & npm run watch:client & npm run start:server"
+        "dev": "rm -rf dist/ & npm run watch:server & npm run watch:client & npm run start:server"
     },
     "author": "",
     "license": "ISC",

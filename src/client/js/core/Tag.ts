@@ -1,4 +1,4 @@
-import type { ITag } from "../../../types"
+import type { ITag } from '../../../types'
 
 export class Tag implements ITag {
 	id: string

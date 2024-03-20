@@ -109,7 +109,7 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 
 	createAudioAsset(req.body.name, `audio/${req.file?.filename}`)
 	res.status(200)
-	res.send("you did it")
+	res.send('you did it')
 })
 
 const server = app.listen(PORT, () => {

@@ -8,10 +8,10 @@ const sequelize = new Sequelize({
 
 export async function testDBConnection() {
 	try {
-		await sequelize.authenticate();
-		console.log("Connection has been established successfully.");
+		await sequelize.authenticate()
+		console.log('Connection has been established successfully.')
 	} catch (error) {
-		console.log("there was an error connecting to the database: ", error);
+		console.log('there was an error connecting to the database: ', error)
 	}		
 }
 

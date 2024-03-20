@@ -5,7 +5,10 @@ import * as fs from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 import * as path from 'node:path'
 
+import multer from 'multer';
+
 import cors from 'cors'
+import { Client } from 'pg'
 
 import dotenv from 'dotenv'
 dotenv.config()
@@ -28,31 +31,67 @@ try {
     console.log(err)
 }
 
+const client = new Client()
+
+try {
+	await client.connect()	
+} catch (err) {
+	console.log(err)
+}
+
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/audio', express.static(audioUploadsPath))
 app.use(express.static(publicPath))
 
-// const storage = multer.diskStorage({
-//     destination: function (req, file, cb) {
-//         cb(null, '/uploads/audio')
-//     },
-//     filename: function (req, file, cb) {
-//         const sp = file.originalname.split('.')
-//         const fn = sp[0]
-//         const ext = sp[1]
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, audioUploadsPath)
+    },
+    filename: function (req, file, cb) {
+        const sp = file.originalname.split('.')
+        const fn = sp[0]
+        const ext = sp[1]
 
-//         cb(null, `${fn}-${Date.now()}.${ext}`)
-//     },
-// })
+        cb(null, `${fn}-${Date.now()}.${ext}`)
+    },
+})
 
-// const upload = multer({ storage: storage })
+const upload = multer({ storage: storage })
 
 app.get('/', async (req: Request, res: Response) => {
     res.sendFile(path.join(publicPath, 'index.html'))
 })
 
-app.listen(PORT, () => {
+// app.get('/audio', async (req: Request, res: Response) => {
+// 	res.sendFile(path.join(publicPath, ''))
+// });
+
+app.post('/upload', upload.single('file'), async (req, res) => {
+	console.log(req)
+	console.log(res)
+    // createAsset(`audio/${req.file.filename}`, generateId(), req.body.name).then(
+    //     (asset) => {
+    //         res.json(asset)
+    //     }
+    // )
+})
+
+const server = app.listen(PORT, () => {
     console.log(`SERVER RUNNING ON PORT ${PORT}`)
 })
+
+function closeServer() {
+	console.info('\n||== Interrupt Signal Received ==||')
+	console.info('||== Closing Server ==||')
+	server.close(() => {
+		console.info('||== Server Closed ==||')
+		client.end()
+		process.exit(0)
+	})
+}
+
+process.on('SIGINT', closeServer)
+
+process.on('SIGTERM', closeServer)

@@ -11,6 +11,8 @@
     },
 	"exclude": [
 		"node_modules",
-		"webpack.*.js"
+        "**/*.spec.ts",
+		"webpack.*.js",
+		"dist"
 	]
 }

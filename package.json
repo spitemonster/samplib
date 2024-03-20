@@ -4,10 +4,12 @@
     "description": "",
     "type": "module",
     "scripts": {
-        "build:server": "webpack --config webpack.server.config.js",
+        "build:server": "webpack --config webpack.server.config.js --stats-error-details",
         "build:client": "webpack --config webpack.client.config.js --stats-error-details",
+		"build": "npm run build:server & npm run build:client",
         "watch:server": "webpack --config webpack.server.config.js --watch",
         "watch:client": "webpack --config webpack.client.config.js --watch",
+		"watch": "npm run watch:server & npm run watch:client",
         "start:server": "wait-on dist/server/server.cjs && nodemon dist/server/server.cjs",
         "dev": "npm run watch:server & npm run watch:client & npm run start:server"
     },

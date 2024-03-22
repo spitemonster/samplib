@@ -102,7 +102,6 @@ const upload = multer({ storage: storage })
 // });
 
 function generateId(e = 21): string {
-	// return nanoid()
 	let t = ''
 	const r = crypto.getRandomValues(new Uint8Array(e))
 	const a = process.env.SEED as string

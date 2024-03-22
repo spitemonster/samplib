@@ -27,7 +27,7 @@ export default {
         ],
     },
     resolve: {
-        extensions: ['.ts', '.js'],
+        extensions: ['.ts', '.js', '.mjs'],
     },
     output: {
         filename: 'server.cjs',

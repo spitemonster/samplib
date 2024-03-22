@@ -1,5 +1,6 @@
 import express from 'express'
 import type { Request, Response } from 'express'
+import { webcrypto as crypto } from 'node:crypto'
 
 import * as fs from 'node:fs/promises'
 import { existsSync } from 'node:fs'
@@ -8,6 +9,8 @@ import * as path from 'node:path'
 import multer from 'multer'
 
 import cors from 'cors'
+
+// import { nanoid } from 'nanoid'
 
 import dotenv from 'dotenv'
 dotenv.config()
@@ -23,7 +26,7 @@ import { Asset } from './db/models/models'
 // const __filename = fileURLToPath(import.meta.url)
 
 const app = express()
-const publicPath = path.resolve(__dirname, '../../dist')
+const PUBLIC_PATH = path.resolve(__dirname, '../../dist')
 
 const audioUploadsPath = path.join(__dirname, '/uploads/audio/')
 app.use('/audio', express.static(audioUploadsPath))
@@ -77,7 +80,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use('/audio', express.static(audioUploadsPath))
-app.use(express.static(publicPath))
+app.use(express.static(PUBLIC_PATH))
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -94,32 +97,58 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-app.get('/', async (req: Request, res: Response) => {
-    res.sendFile(path.join(publicPath, 'index.html'))
-})
-
 // app.get('/audio', async (req: Request, res: Response) => {
-// 	res.sendFile(path.join(publicPath, ''))
+// 	res.sendFile(path.join(PUBLIC_PATH, ''))
 // });
 
-function generateId() {
-    return Math.random().toString(36).slice(2, 14)
+function generateId(e = 21): string {
+	// return nanoid()
+	let t = ''
+	const r = crypto.getRandomValues(new Uint8Array(e))
+	const a = process.env.SEED as string
+	
+	for (let n = 0; n < e; n++) {
+		t += a[63 & r[n]]
+	}
+	
+	return t
 }
 
-async function createAudioAsset(name: string, url: string) {
+async function createAudioAsset(name: string, url: string): Promise<string> {
 	try {
-		const asset = Asset.create({
+		const asset = await Asset.create({
 			id: generateId(),
 			name,
 			url
 		})
 
-		return asset
+		return asset.toJSON()
 	} catch (err) {
 		console.error(err)
-		return
+		return err as string
 	}
 }
+
+
+app.get('/', async (req: Request, res: Response) => {
+    res.sendFile(path.join(PUBLIC_PATH, 'index.html'))
+})
+
+app.get('/assets', async (req: Request, res: Response) => {
+	console.log(req.body)
+
+	try {
+		const assetsQuery = await Asset.findAll();
+		const assets = assetsQuery.map((a) => a.toJSON())
+		
+		res.send(assets)
+
+	} catch (error) {
+		console.error(error)
+		res.status(400)
+		res.send(error)
+	}
+})
 
 app.post('/upload', upload.single('file'), async (req, res) => {
 	if (!req || !req.file || !req.body || !req.body.name) {

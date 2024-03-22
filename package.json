@@ -6,10 +6,10 @@
     "scripts": {
         "build:server": "webpack --config webpack.server.config.js --stats-error-details",
         "build:client": "webpack --config webpack.client.config.js --stats-error-details",
-		"build": "npm run build:server & npm run build:client",
+        "build": "npm run build:server & npm run build:client",
         "watch:server": "webpack --config webpack.server.config.js --watch",
         "watch:client": "webpack --config webpack.client.config.js --watch",
-		"watch": "npm run watch:server & npm run watch:client",
+        "watch": "npm run watch:server & npm run watch:client",
         "start:server": "wait-on dist/server/server.cjs && nodemon dist/server/server.cjs",
         "dev": "rm -rf dist/ & npm run watch:server & npm run watch:client & npm run start:server"
     },
@@ -46,6 +46,7 @@
         "express": "^4.18.2",
         "express-fileupload": "^1.4.0",
         "multer": "^1.4.5-lts.1",
+        "nanoid": "^5.0.6",
         "pg": "^8.11.3",
         "pg-hstore": "^2.3.4",
         "sass": "^1.72.0",

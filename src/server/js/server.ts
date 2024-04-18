@@ -137,7 +137,7 @@ app.get('/assets', async (req: Request, res: Response) => {
 	console.log(req.body)
 
 	try {
-		const assetsQuery = await Asset.findAll();
+		const assetsQuery = await Asset.findAll()
 		const assets = assetsQuery.map((a) => a.toJSON())
 		
 		res.send(assets)
